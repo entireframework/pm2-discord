@@ -3,6 +3,7 @@
   "version": "0.1.3-alpha.1",
   "description": "A PM2 module to emit events to discord",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
