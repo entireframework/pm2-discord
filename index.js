@@ -195,6 +195,8 @@ pm2.launchBus(function(err, bus) {
 });
 
 if (conf.discord_bot_token) {
+  console.log('Discord bot token found: ' + conf.discord_bot_token);
+
   const client = new Discord.Client();
 
   // Discord Bot
