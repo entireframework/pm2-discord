@@ -229,40 +229,39 @@ if (conf.discord_bot_token) {
       console.log('Discord bot is ready!');
   });
 
-  client.on('message', message => {
-      console.log(message);
-      if (!message.content.startsWith('!') || message.author.bot) return;
+  client.on(Discord.Events.InteractionCreate, interaction => {
+      console.log(interaction);
+      if (!interaction.isChatInputCommand()) return;
 
-      const args = message.content.slice(1).trim().split(' ');
-      const command = args.shift().toLowerCase();
+      const command = interaction.commandName;
 
       if (command === 'start') {
-          const processName = args[0];
-          pm2.start(processName, (err, proc) => {
-              if (err) {
-                  message.reply(`Couldn't start process ${processName}`);
-              } else {
-                  message.reply(`Started process ${processName}`);
-              }
-          });
+        const processName = interaction.message.content.split(' ')[1];
+        pm2.start(processName, (err, proc) => {
+            if (err) {
+              interaction.reply(`Couldn't start process ${processName}`);
+            } else {
+              interaction.reply(`Started process ${processName}`);
+            }
+        });
       } else if (command === 'stop') {
-          const processName = args[0];
-          pm2.stop(processName, (err, proc) => {
-              if (err) {
-                  message.reply(`Couldn't stop process ${processName}`);
-              } else {
-                  message.reply(`Stopped process ${processName}`);
-              }
-          });
+        const processName = interaction.message.content.split(' ')[1];
+        pm2.stop(processName, (err, proc) => {
+            if (err) {
+              interaction.reply(`Couldn't stop process ${processName}`);
+            } else {
+              interaction.reply(`Stopped process ${processName}`);
+            }
+        });
       } else if (command === 'restart') {
-          const processName = args[0];
-          pm2.restart(processName, (err, proc) => {
-              if (err) {
-                  message.reply(`Couldn't restart process ${processName}`);
-              } else {
-                  message.reply(`Restarted process ${processName}`);
-              }
-          });
+        const processName = interaction.message.content.split(' ')[1];
+        pm2.restart(processName, (err, proc) => {
+            if (err) {
+              interaction.reply(`Couldn't restart process ${processName}`);
+            } else {
+              interaction.reply(`Restarted process ${processName}`);
+            }
+        });
       }
   });
 
