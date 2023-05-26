@@ -3,6 +3,7 @@ var pm2 = require('pm2');
 var pmx = require('pmx');
 var request = require('request');
 var stripAnsi = require('strip-ansi');
+const Discord = require('discord.js');
 
 // Get the configuration from PM2
 var conf = pmx.initModule();
@@ -192,3 +193,50 @@ pm2.launchBus(function(err, bus) {
     processQueue();
 
 });
+
+if (conf.discord_bot_token) {
+  const client = new Discord.Client();
+
+  // Discord Bot
+  client.once('ready', () => {
+      console.log('Discord bot is ready!');
+  });
+
+  client.on('message', message => {
+      if (!message.content.startsWith('!') || message.author.bot) return;
+
+      const args = message.content.slice(1).trim().split(' ');
+      const command = args.shift().toLowerCase();
+
+      if (command === 'start') {
+          const processName = args[0];
+          pm2.start(processName, (err, proc) => {
+              if (err) {
+                  message.reply(`Couldn't start process ${processName}`);
+              } else {
+                  message.reply(`Started process ${processName}`);
+              }
+          });
+      } else if (command === 'stop') {
+          const processName = args[0];
+          pm2.stop(processName, (err, proc) => {
+              if (err) {
+                  message.reply(`Couldn't stop process ${processName}`);
+              } else {
+                  message.reply(`Stopped process ${processName}`);
+              }
+          });
+      } else if (command === 'restart') {
+          const processName = args[0];
+          pm2.restart(processName, (err, proc) => {
+              if (err) {
+                  message.reply(`Couldn't restart process ${processName}`);
+              } else {
+                  message.reply(`Restarted process ${processName}`);
+              }
+          });
+      }
+  });
+
+  client.login(conf.discord_bot_token);
+}
