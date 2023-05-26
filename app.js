@@ -217,7 +217,11 @@ if (conf.discord_bot_token) {
   console.log('Discord bot token found:', conf.discord_bot_token);
 
   const client = new Discord.Client({
-    intents: Discord.GatewayIntentBits.GuildMessages
+    intents: [
+      GatewayIntentBits.Guilds,
+      GatewayIntentBits.GuildMessages,
+      GatewayIntentBits.MessageContent,
+    ]
   });
 
   // Discord Bot
