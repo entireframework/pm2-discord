@@ -4,6 +4,7 @@ var pmx = require('pmx');
 var request = require('request');
 var stripAnsi = require('strip-ansi');
 const Discord = require('discord.js');
+require('babel-regenerator-runtime');
 
 // Get the configuration from PM2
 var conf = pmx.initModule();
