@@ -226,6 +226,7 @@ if (conf.discord_bot_token) {
   });
 
   client.on('message', message => {
+      console.log(message);
       if (!message.content.startsWith('!') || message.author.bot) return;
 
       const args = message.content.slice(1).trim().split(' ');
