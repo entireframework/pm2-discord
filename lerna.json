@@ -1,0 +1,14 @@
+{
+  "version": "0.1.2",
+  "packages": [
+    "."
+  ],
+  "npmClient": "yarn",
+  "useWorkspaces": false,
+  "useNx": true,
+  "command": {
+    "publish": {
+      "registry": "https://gitlab.com/api/v4/projects/37149880/packages/npm/"
+    }
+  }
+}

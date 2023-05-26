@@ -1,5 +1,5 @@
 {
-  "name": "pm2-discord",
+  "name": "@entireframework/pm2-discord",
   "version": "0.1.2",
   "description": "A PM2 module to emit events to discord",
   "main": "index.js",
@@ -48,5 +48,9 @@
     "buffer": true,
     "buffer_seconds": 1,
     "queue_max": 100
+  },
+  "devDependencies": {
+    "lerna": "^6.6.2",
+    "nx": "^16.2.2"
   }
 }
