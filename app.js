@@ -1,9 +1,26 @@
 'use strict';
-import pm2 from 'pm2';
-import pmx from  'pmx';
-import request from 'request';
-import stripAnsi from 'strip-ansi'
-import Discord from 'discord.js';
+const pm2 = require('pm2');
+const pmx = require('pmx');
+const request = require('request');
+const Discord = require('discord.js');
+
+function ansiRegex({onlyFirst = false} = {}) {
+	const pattern = [
+	    '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
+		'(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))'
+	].join('|');
+
+	return new RegExp(pattern, onlyFirst ? undefined : 'g');
+}
+
+function stripAnsi(string) {
+	if (typeof string !== 'string') {
+		throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+	}
+
+	return string.replace(ansiRegex(), '');
+}
+
 
 // Get the configuration from PM2
 var conf = pmx.initModule();
