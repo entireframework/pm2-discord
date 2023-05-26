@@ -2,7 +2,8 @@
   "name": "@entireframework/pm2-discord",
   "version": "0.1.3-alpha.5",
   "description": "A PM2 module to emit events to discord",
-  "main": "dist/index.js",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "babel src --out-dir dist --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,12 +28,11 @@
   },
   "homepage": "https://github.com/FranciscoG/pm2-discord",
   "dependencies": {
-    "babel-regenerator-runtime": "^6.5.0",
     "discord.js": "^14.11.0",
     "pm2": "^5.3.0",
     "pmx": "^1.6.7",
     "request": "^2.88.2",
-    "strip-ansi": "^7.0.1"
+    "strip-ansi": "7.0.0"
   },
   "config": {
     "discord_bot_token": null,
@@ -54,9 +54,6 @@
     "queue_max": 100
   },
   "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
     "lerna": "^6.6.2",
     "nx": "^16.2.2"
   }

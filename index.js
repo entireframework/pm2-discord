@@ -1,10 +1,9 @@
 'use strict';
-var pm2 = require('pm2');
-var pmx = require('pmx');
-var request = require('request');
-var stripAnsi = require('strip-ansi');
-const Discord = require('discord.js');
-require('babel-regenerator-runtime');
+import pm2 from 'pm2';
+import pmx from  'pmx';
+import request from 'request';
+import stripAnsi from 'strip-ansi'
+import Discord from 'discord.js';
 
 // Get the configuration from PM2
 var conf = pmx.initModule();
