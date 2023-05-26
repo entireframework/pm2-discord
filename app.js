@@ -229,41 +229,53 @@ if (conf.discord_bot_token) {
       console.log('Discord bot is ready!');
   });
 
-  client.on(Discord.Events.InteractionCreate, interaction => {
-      console.log(interaction);
-      if (!interaction.isChatInputCommand()) return;
+  client.commands = new Collection();
 
-      const command = interaction.commandName;
-
-      if (command === 'start') {
-        const processName = interaction.message.content.split(' ')[1];
-        pm2.start(processName, (err, proc) => {
-            if (err) {
-              interaction.reply(`Couldn't start process ${processName}`);
-            } else {
-              interaction.reply(`Started process ${processName}`);
-            }
-        });
-      } else if (command === 'stop') {
-        const processName = interaction.message.content.split(' ')[1];
-        pm2.stop(processName, (err, proc) => {
-            if (err) {
-              interaction.reply(`Couldn't stop process ${processName}`);
-            } else {
-              interaction.reply(`Stopped process ${processName}`);
-            }
-        });
-      } else if (command === 'restart') {
-        const processName = interaction.message.content.split(' ')[1];
-        pm2.restart(processName, (err, proc) => {
-            if (err) {
-              interaction.reply(`Couldn't restart process ${processName}`);
-            } else {
-              interaction.reply(`Restarted process ${processName}`);
-            }
-        });
-      }
+  client.commands.set('start', {
+    data: new Discord.SlashCommandBuilder()
+    .setName('start')
+		.setDescription('Start a process'),
+    async execute(interaction) {
+      console.log('interaction', interaction);
+      await interaction.reply('Pong!');
+    },
   });
+
+  // client.on(Discord.Events.InteractionCreate, interaction => {
+  //     console.log(interaction);
+  //     if (!interaction.isChatInputCommand()) return;
+
+  //     const command = interaction.commandName;
+
+  //     if (command === 'start') {
+  //       const processName = interaction.message.content.split(' ')[1];
+  //       pm2.start(processName, (err, proc) => {
+  //           if (err) {
+  //             interaction.reply(`Couldn't start process ${processName}`);
+  //           } else {
+  //             interaction.reply(`Started process ${processName}`);
+  //           }
+  //       });
+  //     } else if (command === 'stop') {
+  //       const processName = interaction.message.content.split(' ')[1];
+  //       pm2.stop(processName, (err, proc) => {
+  //           if (err) {
+  //             interaction.reply(`Couldn't stop process ${processName}`);
+  //           } else {
+  //             interaction.reply(`Stopped process ${processName}`);
+  //           }
+  //       });
+  //     } else if (command === 'restart') {
+  //       const processName = interaction.message.content.split(' ')[1];
+  //       pm2.restart(processName, (err, proc) => {
+  //           if (err) {
+  //             interaction.reply(`Couldn't restart process ${processName}`);
+  //           } else {
+  //             interaction.reply(`Restarted process ${processName}`);
+  //           }
+  //       });
+  //     }
+  // });
 
   client.login(conf.discord_bot_token);
 }
