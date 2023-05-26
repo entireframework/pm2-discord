@@ -244,7 +244,7 @@ if (conf.discord_bot_token) {
     },
   });
 
-  client.on(Events.InteractionCreate, async interaction => {
+  client.on(Discord.Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.commands.get(interaction.commandName);
