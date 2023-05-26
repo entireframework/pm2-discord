@@ -213,7 +213,7 @@ pm2.launchBus(function(err, bus) {
 
 console.log('Config:', conf);
 
-if (conf.discord_bot_token) {
+if (conf.discord_bot_token && conf.client_id) {
   console.log('Discord bot token found:', conf.discord_bot_token);
 
   const client = new Discord.Client({
@@ -229,9 +229,10 @@ if (conf.discord_bot_token) {
       console.log('Discord bot is ready!');
   });
 
+  const commands = [];
   client.commands = new Discord.Collection();
 
-  client.commands.set('start', {
+  const startCommand = {
     data: new Discord.SlashCommandBuilder()
     .setName('start')
 		.setDescription('Start a process')
@@ -242,7 +243,9 @@ if (conf.discord_bot_token) {
       console.log('interaction', interaction);
       await interaction.reply('Pong!');
     },
-  });
+  }
+  client.commands.set('start', startCommand);
+  commands.push(startCommand.data.toJSON());
 
   client.on(Discord.Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
@@ -265,6 +268,26 @@ if (conf.discord_bot_token) {
       }
     }
   });
+
+  const rest = new Discord.REST().setToken(conf.discord_bot_token);
+
+  // and deploy your commands!
+  (async () => {
+    try {
+      console.log(`Started refreshing ${commands.length} application (/) commands.`);
+
+      // The put method is used to fully refresh all commands in the guild with the current set
+      const data = await rest.put(
+        Routes.applicationCommands(conf.client_id),
+        { body: commands },
+      );
+
+      console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    } catch (error) {
+      // And of course, make sure you catch and log any errors!
+      console.error(error);
+    }
+  })();
 
   // client.on(Discord.Events.InteractionCreate, interaction => {
   //     console.log(interaction);

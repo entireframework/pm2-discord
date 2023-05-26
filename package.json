@@ -33,6 +33,7 @@
   },
   "config": {
     "discord_bot_token": null,
+    "client_id": null,
     "discord_url": null,
     "process_name": null,
     "log": true,
