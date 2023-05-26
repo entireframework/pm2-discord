@@ -218,9 +218,9 @@ if (conf.discord_bot_token) {
 
   const client = new Discord.Client({
     intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent,
+      Discord.GatewayIntentBits.Guilds,
+      Discord.GatewayIntentBits.GuildMessages,
+      Discord.GatewayIntentBits.MessageContent,
     ]
   });
 
