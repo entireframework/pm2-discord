@@ -229,12 +229,15 @@ if (conf.discord_bot_token) {
       console.log('Discord bot is ready!');
   });
 
-  client.commands = new Collection();
+  client.commands = new Discord.Collection();
 
   client.commands.set('start', {
     data: new Discord.SlashCommandBuilder()
     .setName('start')
-		.setDescription('Start a process'),
+		.setDescription('Start a process')
+    .addStringOption(option =>
+      option.setName('name')
+        .setDescription('Proccess name')),
     async execute(interaction) {
       console.log('interaction', interaction);
       await interaction.reply('Pong!');
