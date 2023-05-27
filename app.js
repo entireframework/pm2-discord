@@ -248,12 +248,10 @@ const deployCommand = {
 
       const response = await runCommand(process.cmd, { cwd: process.cwd });
 
-      if (response) {
+      if (!response) {
         await interaction.followUp(`Deployed ${process.name}`);
       } else {
-        await interaction.followUp(
-          `Deployed ${process.name} with code ${response}`,
-        );
+        await interaction.followUp(`Deploy failed with code ${response}`);
       }
     } else {
       await interaction.reply(`Process not found:( ${processName}`);
