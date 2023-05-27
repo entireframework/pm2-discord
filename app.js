@@ -217,7 +217,8 @@ const deployCommand = {
     .setDescription('Deploy a project')
     .addStringOption((option) =>
       option
-        .setName('Project')
+        .setName('project')
+        .setDescription('Project name')
         .setRequired(true)
         .addChoices(
           ...projects.map((project) => {
@@ -231,7 +232,7 @@ const deployCommand = {
   async execute(interaction) {
     const projectName = interaction.options.getString('Project');
 
-    const project = projects.find((proc) => proc.name === projectName);
+    const project = projects.find((p) => p.name === projectName);
 
     if (project) {
       await interaction.reply(`Deploying ${project.name}`);
