@@ -250,7 +250,7 @@ const deployCommand = {
   },
 };
 
-const commandsToRegister = [startCommand, deployCommand];
+const commandsToRegister = [/* startCommand,  */ deployCommand];
 
 // Start listening on the PM2 BUS
 pm2.launchBus(function (err, bus) {
