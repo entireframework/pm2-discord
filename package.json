@@ -50,7 +50,7 @@
     "buffer": true,
     "buffer_seconds": 1,
     "queue_max": 100,
-    "processes_file": "~/processes.json"
+    "projects_file": "~/projects.json"
   },
   "devDependencies": {
     "eslint": "^8.41.0",

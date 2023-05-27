@@ -203,10 +203,10 @@ const startCommand = {
   },
 };
 
-let processes = [];
+let projects = [];
 
 try {
-  processes = JSON.parse(fs.readFileSync(conf.processes_file, 'utf8'));
+  projects = JSON.parse(fs.readFileSync(conf.projects_file, 'utf8'));
 } catch (e) {
   console.log(e);
 }
@@ -214,38 +214,37 @@ try {
 const deployCommand = {
   data: new Discord.SlashCommandBuilder()
     .setName('deploy')
-    .setDescription('Deploy a process')
+    .setDescription('Deploy a project')
     .addStringOption((option) =>
       option
-        .setName('process')
-        .setDescription('Proccess name')
+        .setName('Project')
         .setRequired(true)
         .addChoices(
-          ...processes.map((process) => {
+          ...projects.map((project) => {
             return {
-              name: process.name,
-              value: process.name,
+              name: project.name,
+              value: project.name,
             };
           }),
         ),
     ),
   async execute(interaction) {
-    const processName = interaction.options.getString('process');
+    const projectName = interaction.options.getString('Project');
 
-    const process = processes.find((proc) => proc.name === processName);
+    const project = projects.find((proc) => proc.name === projectName);
 
-    if (process) {
-      await interaction.reply(`Deploying ${process.name}`);
+    if (project) {
+      await interaction.reply(`Deploying ${project.name}`);
 
-      const response = await runCommand(process.cmd, { cwd: process.cwd });
+      const response = await runCommand(project.cmd, { cwd: project.cwd });
 
       if (!response) {
-        await interaction.followUp(`Deployed ${process.name}`);
+        await interaction.followUp(`Deployed ${project.name}`);
       } else {
         await interaction.followUp(`Deploy failed with code ${response}`);
       }
     } else {
-      await interaction.reply(`Process not found:( ${processName}`);
+      await interaction.reply(`Project not found:( ${projectName}`);
     }
   },
 };
