@@ -238,7 +238,8 @@ if (conf.discord_bot_token && conf.client_id) {
 		.setDescription('Start a process')
     .addStringOption(option =>
       option.setName('name')
-        .setDescription('Proccess name')),
+        .setDescription('Proccess name')
+        .setRequired(true)),
     async execute(interaction) {
       console.log('interaction', interaction);
       await interaction.reply('Pong!');
@@ -278,7 +279,7 @@ if (conf.discord_bot_token && conf.client_id) {
 
       // The put method is used to fully refresh all commands in the guild with the current set
       const data = await rest.put(
-        Discord.Routes.applicationCommands(conf.client_id.replace('client_id', '')),
+        Discord.Routes.applicationCommands(conf.client_id + ''),
         { body: commands },
       );
 
