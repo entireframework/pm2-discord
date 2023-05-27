@@ -206,7 +206,7 @@ const startCommand = {
 let processes = [];
 
 try {
-  processes = fs.readFileSync(conf.process_file, 'utf8');
+  processes = JSON.parse(fs.readFileSync(conf.processes_file, 'utf8'));
 } catch (e) {
   console.log(e);
 }
