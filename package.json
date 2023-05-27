@@ -52,7 +52,13 @@
     "queue_max": 100
   },
   "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
     "lerna": "^6.6.2",
-    "nx": "^16.2.2"
+    "nx": "^16.2.2",
+    "prettier": "^2.8.8"
   }
 }
