@@ -1,5 +1,6 @@
 const pm2 = require('pm2');
 const pmx = require('pmx');
+const fs = require('fs');
 const request = require('request');
 const Discord = require('discord.js');
 const childProcess = require('child_process');
@@ -202,23 +203,13 @@ const startCommand = {
   },
 };
 
-const processes = [
-  {
-    name: 'Gramz',
-    cwd: '/gramz/current',
-    cmd: 'yarn deploy',
-  },
-  {
-    name: 'IQI Tech',
-    cwd: '/iqi-report',
-    cmd: 'yarn deploy-staging',
-  },
-  {
-    name: 'IQI Life',
-    cwd: '/iqi-report',
-    cmd: 'yarn deploy',
-  },
-];
+let processes = [];
+
+try {
+  processes = fs.readFileSync(conf.process_file, 'utf8');
+} catch (e) {
+  console.log(e);
+}
 
 const deployCommand = {
   data: new Discord.SlashCommandBuilder()
