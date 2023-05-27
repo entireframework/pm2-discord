@@ -2,7 +2,7 @@ const pm2 = require('pm2');
 const pmx = require('pmx');
 const request = require('request');
 const Discord = require('discord.js');
-const { ChildProcess } = require('child_process');
+const childProcess = require('child_process');
 
 function ansiRegex({ onlyFirst = false } = {}) {
   const pattern = [
@@ -171,7 +171,7 @@ function createMessage(data, eventName, altDescription) {
 
 function runCommand(command, options = {}) {
   return new Promise((resolve, reject) => {
-    const child = ChildProcess.spawn('eval', [command], options);
+    const child = childProcess.spawn('eval', [command], options);
     child.on('close', (code) => {
       if (!code) {
         resolve();
