@@ -237,7 +237,7 @@ if (conf.discord_bot_token && conf.client_id) {
     .setName('start')
 		.setDescription('Start a process')
     .addStringOption(option =>
-      option.setName('name')
+      option.setName('process')
         .setDescription('Proccess name')
         .setRequired(true)),
     async execute(interaction) {
@@ -245,8 +245,65 @@ if (conf.discord_bot_token && conf.client_id) {
       await interaction.reply('Pong!');
     },
   }
-  client.commands.set('start', startCommand);
-  commands.push(startCommand.data.toJSON());
+
+  function runCommand(command, options = {}) {
+    return new Promise((resolve, reject) => {
+        let child = childProcess.spawn('eval', [command], options);
+        child.on('close', (code) => {
+            if (!code) {
+                resolve();
+            } else {
+                reject(code);
+            }
+        });
+    });
+}
+
+  const deployCommand = {
+    data: new Discord.SlashCommandBuilder()
+    .setName('deploy')
+		.setDescription('Deploy a process')
+    .addStringOption(option =>
+      option.setName('process')
+        .setDescription('Proccess name')
+        .setRequired(true)
+        .addChoices({
+          name: 'Gramz',
+          value: 'gramz',
+        })),
+    async execute(interaction) {
+      const process = interaction.options.getString('process');
+
+      if (process === 'gramz') {
+        const cwd = '/gramz/current';
+        const cmd = 'yarn deploy';
+
+        await interaction.reply('Deploying ' + process);
+
+        const response = await runCommand(cmd, { cwd });
+
+        if (response) {
+          await interaction.reply('Deployed ' + process);
+        } else {
+          await interaction.reply('Deploy failed with code ' + response);
+        }
+
+        return
+      }
+
+      await interaction.reply('Process not found:( ' + process);
+    },
+  }
+
+  const commandsToRegister = [
+    startCommand,
+    deployCommand,
+  ];
+
+  commandsToRegister.forEach(command => {
+    client.commands.set(command.data.name, command);
+    commands.push(command.data.toJSON());
+  });
 
   client.on(Discord.Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
