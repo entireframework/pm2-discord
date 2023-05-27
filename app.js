@@ -230,7 +230,7 @@ const deployCommand = {
         ),
     ),
   async execute(interaction) {
-    const projectName = interaction.options.getString('Project');
+    const projectName = interaction.options.getString('project');
 
     const project = projects.find((p) => p.name === projectName);
 
