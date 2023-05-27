@@ -171,7 +171,11 @@ function createMessage(data, eventName, altDescription) {
 
 function runCommand(command, options = {}) {
   return new Promise((resolve, reject) => {
-    const child = childProcess.spawn('eval', [command], options);
+    const child = childProcess.spawn('eval', [command], {
+      ...options,
+      env: process.env,
+      shell: true,
+    });
     child.on('close', (code) => {
       if (!code) {
         resolve();
