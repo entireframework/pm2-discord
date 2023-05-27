@@ -336,7 +336,7 @@ if (conf.discord_bot_token && conf.client_id) {
 
       // The put method is used to fully refresh all commands in the guild with the current set
       const data = await rest.put(
-        Discord.Routes.applicationCommands(conf.client_id + ''),
+        Discord.Routes.applicationCommands(conf.client_id.replace('client', '')),
         { body: commands },
       );
 
