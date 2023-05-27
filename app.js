@@ -202,6 +202,24 @@ const startCommand = {
   },
 };
 
+const processes = [
+  {
+    name: 'Gramz',
+    cwd: '/gramz/current',
+    cmd: 'yarn deploy',
+  },
+  {
+    name: 'IQI Tech',
+    cwd: '/iqi-report',
+    cmd: 'yarn deploy-staging',
+  },
+  {
+    name: 'IQI Life',
+    cwd: '/iqi-report',
+    cmd: 'yarn deploy',
+  },
+];
+
 const deployCommand = {
   data: new Discord.SlashCommandBuilder()
     .setName('deploy')
@@ -211,32 +229,33 @@ const deployCommand = {
         .setName('process')
         .setDescription('Proccess name')
         .setRequired(true)
-        .addChoices({
-          name: 'Gramz',
-          value: 'gramz',
-        }),
+        .addChoices(
+          processes.map((process) => {
+            return {
+              name: process.name,
+              value: process.name,
+            };
+          }),
+        ),
     ),
   async execute(interaction) {
-    const process = interaction.options.getString('process');
+    const processName = interaction.options.getString('process');
 
-    if (process === 'gramz') {
-      const cwd = '/gramz/current';
-      const cmd = 'yarn deploy';
+    const process = processes.find((proc) => proc.name === processName);
 
-      await interaction.reply(`Deploying ${process}`);
+    if (process) {
+      await interaction.reply(`Deploying ${process.name}`);
 
-      const response = await runCommand(cmd, { cwd });
+      const response = await runCommand(process.cmd, { cwd: process.cwd });
 
       if (response) {
-        await interaction.reply(`Deployed ${process}`);
+        await interaction.followUp(`Deployed ${process.name}`);
       } else {
-        await interaction.reply(`Deploy failed with code ${response}`);
+        await interaction.followUp(`Deploy failed with code ${response.name}`);
       }
-
-      return;
+    } else {
+      await interaction.reply(`Process not found:( ${processName}`);
     }
-
-    await interaction.reply(`Process not found:( ${process}`);
   },
 };
 
