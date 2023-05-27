@@ -230,7 +230,7 @@ const deployCommand = {
         .setDescription('Proccess name')
         .setRequired(true)
         .addChoices(
-          processes.map((process) => {
+          ...processes.map((process) => {
             return {
               name: process.name,
               value: process.name,
