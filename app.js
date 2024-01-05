@@ -78,7 +78,12 @@ function sendToDiscord(message) {
       console.error(
         new Date().toISOString(),
         'Error occured during the request to the Discord webhook for message',
+      );
+      console.log(
+        new Date().toISOString(),
+        'Error occured during the request to the Discord webhook for message',
         description,
+        body,
       );
     }
   });
