@@ -50,7 +50,7 @@ function sendToDiscord(message) {
   // If a Discord URL is not set, we do not want to continue and nofify the user that it needs to be set
   if (!conf.discord_url) {
     return console.error(
-      (new Date()).toISOString(),
+      new Date().toISOString(),
       "There is no Discord URL set, please set the Discord URL: 'pm2 set pm2-discord:discord_url https://[discord_url]'",
     );
   }
@@ -71,11 +71,15 @@ function sendToDiscord(message) {
   // Finally, make the post request to the Discord Incoming Webhook
   request(options, function (err, res, body) {
     if (err) {
-      return console.error((new Date()).toISOString(), err);
+      return console.error(new Date().toISOString(), err);
     }
     /* A successful POST to Discord's webhook responds with a 204 NO CONTENT */
     if (res.statusCode !== 204) {
-      console.error((new Date()).toISOString(), 'Error occured during the request to the Discord webhook for message', description);
+      console.error(
+        new Date().toISOString(),
+        'Error occured during the request to the Discord webhook for message',
+        description,
+      );
     }
   });
 }
@@ -199,7 +203,7 @@ const startCommand = {
         .setRequired(true),
     ),
   async execute(interaction) {
-    console.log((new Date()).toISOString(), 'interaction', interaction);
+    console.log(new Date().toISOString(), 'interaction', interaction);
     await interaction.reply('Pong!');
   },
 };
@@ -209,7 +213,7 @@ let projects = [];
 try {
   projects = JSON.parse(fs.readFileSync(conf.projects_file, 'utf8'));
 } catch (e) {
-  console.log((new Date()).toISOString(), e);
+  console.log(new Date().toISOString(), e);
 }
 
 const deployCommand = {
@@ -301,10 +305,14 @@ pm2.launchBus(function (err, bus) {
   processQueue();
 });
 
-console.log((new Date()).toISOString(), 'Config:', conf);
+console.log(new Date().toISOString(), 'Config:', conf);
 
 if (conf.discord_bot_token && conf.client_id) {
-  console.log((new Date()).toISOString(), 'Discord bot token found:', conf.discord_bot_token);
+  console.log(
+    new Date().toISOString(),
+    'Discord bot token found:',
+    conf.discord_bot_token,
+  );
 
   const client = new Discord.Client({
     intents: [
@@ -316,7 +324,7 @@ if (conf.discord_bot_token && conf.client_id) {
 
   // Discord Bot
   client.once('ready', () => {
-    console.log((new Date()).toISOString(), 'Discord bot is ready!');
+    console.log(new Date().toISOString(), 'Discord bot is ready!');
   });
 
   const commands = [];
@@ -334,7 +342,7 @@ if (conf.discord_bot_token && conf.client_id) {
 
     if (!command) {
       console.error(
-        (new Date()).toISOString(),
+        new Date().toISOString(),
         `No command matching ${interaction.commandName} was found.`,
       );
       return;
@@ -343,7 +351,7 @@ if (conf.discord_bot_token && conf.client_id) {
     try {
       await command.execute(interaction);
     } catch (error) {
-      console.error((new Date()).toISOString(), error);
+      console.error(new Date().toISOString(), error);
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({
           content: 'There was an error while executing this command!',
@@ -364,7 +372,7 @@ if (conf.discord_bot_token && conf.client_id) {
   (async () => {
     try {
       console.log(
-        (new Date()).toISOString(),
+        new Date().toISOString(),
         `Started refreshing ${commands.length} application (/) commands.`,
       );
 
@@ -377,12 +385,12 @@ if (conf.discord_bot_token && conf.client_id) {
       );
 
       console.log(
-        (new Date()).toISOString(),
+        new Date().toISOString(),
         `Successfully reloaded ${data.length} application (/) commands.`,
       );
     } catch (error) {
       // And of course, make sure you catch and log any errors!
-      console.error((new Date()).toISOString(), error);
+      console.error(new Date().toISOString(), error);
     }
   })();
 
