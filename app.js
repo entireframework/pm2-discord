@@ -171,13 +171,16 @@ function createMessage(data, eventName, altDescription) {
   if (typeof msg === 'object') {
     msg = JSON.stringify(msg);
   }
+  const description = stripAnsi(msg).substring(0, 2000);
 
-  messages.push({
-    name: data.process.name,
-    event: eventName,
-    description: stripAnsi(msg).substring(0, 2000),
-    timestamp: Math.floor(Date.now() / 1000),
-  });
+  if (!description.includes('ECONNRESET')) {
+    messages.push({
+      name: data.process.name,
+      event: eventName,
+      description,
+      timestamp: Math.floor(Date.now() / 1000),
+    });
+  }
 }
 
 function runCommand(command, options = {}) {
