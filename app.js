@@ -173,7 +173,11 @@ function createMessage(data, eventName, altDescription) {
   }
   const description = stripAnsi(msg).substring(0, 2000);
 
-  if (!description.includes('ECONNRESET')) {
+  if (
+    description &&
+    !description.includes('ECONNRESET') &&
+    !description.includes('Error: Parse Error: Invalid method encountered')
+  ) {
     messages.push({
       name: data.process.name,
       event: eventName,
